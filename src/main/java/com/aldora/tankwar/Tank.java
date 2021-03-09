@@ -30,7 +30,7 @@ public class Tank {
         this.isEnemy = isEnemy;
     }
 
-    Image getImage() {
+    protected Image getImage() {
         String prefix = this.isEnemy ? "e" : "";
 
         switch (this.direction) {

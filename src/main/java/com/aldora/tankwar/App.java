@@ -5,11 +5,15 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class App extends JComponent {
     private Tank playerTank;
 
     private ArrayList<Tank> enemyTanks = new ArrayList<>();
+
+    private List<Wall> walls;
 
     public App() {
         this.playerTank = new Tank(400, 100, Direction.DOWN, false);
@@ -17,23 +21,36 @@ public class App extends JComponent {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 this.enemyTanks.add(new Tank(
-                        200 + j * 60,
+                        280 + j * 120,
                         400 + i * 40,
                         Direction.UP,
                         true));
             }
         }
 
+        this.walls = Arrays.asList(
+                new Wall(200, 140, 15, true),
+                new Wall(200, 540, 15, true),
+                new Wall(100, 80, 15, false),
+                new Wall(700, 80, 15, false)
+        );
         this.setPreferredSize(new Dimension(800, 600));
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, 800, 600);
         this.playerTank.paint(g);
 
         for (Tank enemyTank: this.enemyTanks) {
             enemyTank.paint(g);
         }
+
+        for (Wall wall: this.walls) {
+            wall.paint(g);
+        }
+
         super.paintComponent(g);
     }
 
