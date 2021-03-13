@@ -33,6 +33,8 @@ public class Tank {
     }
 
     public void paint(Graphics graphics) {
+        int oldX = this.x, oldY = this.y;
+
         this.determineMovingDirection();
         this.determineMovingPosition();
         this.tankImage = this.getImage();
@@ -49,7 +51,27 @@ public class Tank {
             this.y = 600 - this.tankImage.getHeight(null);
         }
 
+        for (Wall wall: App.getInstance().getWall()) {
+            if (this.getRectangle().intersects(wall.getRectangle())) {
+                this.x = oldX;
+                this.y = oldY;
+                break;
+            }
+        }
+
+        for (Tank enemyTank: App.getInstance().getEnemyTanks()) {
+            if (this.getRectangle().intersects(enemyTank.getRectangle())) {
+                this.x = oldX;
+                this.y = oldY;
+                break;
+            }
+        }
+
         graphics.drawImage(this.tankImage, this.x, this.y, null);
+    }
+
+    public Rectangle getRectangle() {
+        return new Rectangle(this.x, this.y, this.tankImage.getWidth(null), this.tankImage.getHeight(null));
     }
 
     public int getX() {

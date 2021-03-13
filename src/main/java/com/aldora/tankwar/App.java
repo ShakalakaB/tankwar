@@ -15,7 +15,9 @@ public class App extends JComponent {
 
     private List<Wall> walls;
 
-    public App() {
+    private static App instance;
+
+    private App() {
         this.playerTank = new Tank(400, 100, Direction.DOWN, false);
 
         for (int i = 0; i < 3; i++) {
@@ -35,6 +37,22 @@ public class App extends JComponent {
                 new Wall(700, 80, 15, false)
         );
         this.setPreferredSize(new Dimension(800, 600));
+    }
+
+    public static App getInstance() {
+        if (App.instance == null) {
+            App.instance = new App();
+        }
+
+        return App.instance;
+    }
+
+    public List<Wall> getWall() {
+        return this.walls;
+    }
+
+    public ArrayList<Tank> getEnemyTanks() {
+        return this.enemyTanks;
     }
 
     @Override
