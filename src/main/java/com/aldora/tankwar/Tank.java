@@ -1,6 +1,5 @@
 package com.aldora.tankwar;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -23,36 +22,34 @@ public class Tank {
 
     private boolean isEnemy = false;
 
+    private Image tankImage;
+
     public Tank(int x, int y, Direction direction, boolean isEnemy) {
         this.x = x;
         this.y = y;
         this.direction = direction;
         this.isEnemy = isEnemy;
+        this.tankImage = this.getImage();
     }
 
-    protected Image getImage() {
-        String prefix = this.isEnemy ? "e" : "";
+    public void paint(Graphics graphics) {
+        this.determineMovingDirection();
+        this.determineMovingPosition();
+        this.tankImage = this.getImage();
 
-        switch (this.direction) {
-            case UP:
-                return Tools.getImage(prefix + "tankU.gif");
-            case DOWN:
-                return Tools.getImage(prefix + "tankD.gif");
-            case LEFT:
-                return Tools.getImage(prefix + "tankL.gif");
-            case RIGHT:
-                return Tools.getImage(prefix + "tankR.gif");
-            case UPLEFT:
-                return Tools.getImage(prefix + "tankLU.gif");
-            case UPRIGHT:
-                return Tools.getImage(prefix + "tankRU.gif");
-            case DOWNLEFT:
-                return Tools.getImage(prefix + "tankLD.gif");
-            case DOWNRIGHT:
-                return Tools.getImage(prefix + "tankRD.gif");
+        if (this.x < 0) {
+            this.x = 0;
+        } else if (this.x + this.tankImage.getWidth(null) > 800) {
+            this.x = 800 - this.tankImage.getWidth(null);
         }
 
-        return null;
+        if (this.y < 0) {
+            this.y = 0;
+        } else if (this.y + this.tankImage.getHeight(null) > 600) {
+            this.y = 600 - this.tankImage.getHeight(null);
+        }
+
+        graphics.drawImage(this.tankImage, this.x, this.y, null);
     }
 
     public int getX() {
@@ -105,10 +102,37 @@ public class Tank {
         }
     }
 
-    public void paint(Graphics graphics) {
-        this.determineMovingDirection();
-        this.determineMovingPosition();
-        graphics.drawImage(this.getImage(), this.x, this.y, null);
+    protected Image getImage() {
+        String prefix = this.isEnemy ? "e" : "";
+
+        switch (this.direction) {
+            case UP:
+                this.tankImage = Tools.getImage(prefix + "tankU.gif");
+                break;
+            case DOWN:
+                this.tankImage = Tools.getImage(prefix + "tankD.gif");
+                break;
+            case LEFT:
+                this.tankImage = Tools.getImage(prefix + "tankL.gif");
+                break;
+            case RIGHT:
+                this.tankImage = Tools.getImage(prefix + "tankR.gif");
+                break;
+            case UPLEFT:
+                this.tankImage = Tools.getImage(prefix + "tankLU.gif");
+                break;
+            case UPRIGHT:
+                this.tankImage = Tools.getImage(prefix + "tankRU.gif");
+                break;
+            case DOWNLEFT:
+                this.tankImage = Tools.getImage(prefix + "tankLD.gif");
+                break;
+            case DOWNRIGHT:
+                this.tankImage = Tools.getImage(prefix + "tankRD.gif");
+                break;
+        }
+
+        return this.tankImage;
     }
 
     protected void determineMovingDirection() {
