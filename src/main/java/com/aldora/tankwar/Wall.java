@@ -8,11 +8,11 @@ public class Wall {
 
     private int y;
 
-    private int bricksNumber;
+    private final int bricksNumber;
 
-    private boolean isHorizontal;
+    private final boolean isHorizontal;
 
-    private Image brickImage;
+    private final Image brickImage;
 
     public Wall(int x, int y, int bricksNumber, boolean isHorizontal) {
         this.x = x;

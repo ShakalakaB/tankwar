@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class App extends JComponent {
-    private Tank playerTank;
+    private final Tank playerTank;
 
-    private ArrayList<Tank> enemyTanks = new ArrayList<>();
+    private final ArrayList<Tank> enemyTanks = new ArrayList<>();
 
-    private List<Wall> walls;
+    private final List<Wall> walls;
 
     private static App instance;
 
