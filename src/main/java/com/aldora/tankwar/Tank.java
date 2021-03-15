@@ -51,7 +51,7 @@ public class Tank {
             this.y = 600 - this.tankImage.getHeight(null);
         }
 
-        for (Wall wall: App.getInstance().getWall()) {
+        for (Wall wall : App.getInstance().getWall()) {
             if (this.getRectangle().intersects(wall.getRectangle())) {
                 this.x = oldX;
                 this.y = oldY;
@@ -59,7 +59,7 @@ public class Tank {
             }
         }
 
-        for (Tank enemyTank: App.getInstance().getEnemyTanks()) {
+        for (Tank enemyTank : App.getInstance().getEnemyTanks()) {
             if (this.getRectangle().intersects(enemyTank.getRectangle())) {
                 this.x = oldX;
                 this.y = oldY;
@@ -87,6 +87,9 @@ public class Tank {
                 break;
             case KeyEvent.VK_RIGHT:
                 this.right = true;
+                break;
+            case KeyEvent.VK_CONTROL:
+                this.fire();
                 break;
         }
     }
@@ -210,5 +213,13 @@ public class Tank {
                 this.y += 5;
                 break;
         }
+    }
+
+    protected void fire() {
+        App.getInstance().getMissles().add(
+                new Missle(this.x + this.tankImage.getWidth(null) / 2 - 6,
+                        this.y + this.tankImage.getHeight(null) / 2 - 6,
+                        this.direction, this.isEnemy)
+        );
     }
 }

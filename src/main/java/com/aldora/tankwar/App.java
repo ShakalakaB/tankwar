@@ -15,6 +15,8 @@ public class App extends JComponent {
 
     private final List<Wall> walls;
 
+    private List<Missle> missles;
+
     private static App instance;
 
     private App() {
@@ -36,6 +38,9 @@ public class App extends JComponent {
                 new Wall(100, 80, 15, false),
                 new Wall(700, 80, 15, false)
         );
+
+        this.missles = new ArrayList<>();
+
         this.setPreferredSize(new Dimension(800, 600));
     }
 
@@ -55,18 +60,26 @@ public class App extends JComponent {
         return this.enemyTanks;
     }
 
+    public List<Missle> getMissles() {
+        return this.missles;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, 800, 600);
         this.playerTank.paint(g);
 
-        for (Tank enemyTank: this.enemyTanks) {
+        for (Tank enemyTank : this.enemyTanks) {
             enemyTank.paint(g);
         }
 
-        for (Wall wall: this.walls) {
+        for (Wall wall : this.walls) {
             wall.paint(g);
+        }
+
+        for (Missle missle : this.missles) {
+            missle.paint(g);
         }
 
         super.paintComponent(g);
@@ -79,7 +92,7 @@ public class App extends JComponent {
         frame.setIconImage(new ImageIcon("assets/images/icon.png").getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        final App app = new App();
+        final App app = App.getInstance();
         frame.add(app);
         frame.pack();
 
@@ -87,17 +100,26 @@ public class App extends JComponent {
             @Override
             public void keyPressed(KeyEvent e) {
                 app.playerTank.keyPressed(e);
-                app.repaint();
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
                 app.playerTank.keyReleased(e);
-                app.repaint();
             }
         });
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        while (true) {
+            app.repaint();
+
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
