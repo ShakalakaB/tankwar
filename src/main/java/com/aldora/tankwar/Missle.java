@@ -38,32 +38,7 @@ public class Missle {
     }
 
     protected Image getImage() {
-        switch (this.direction) {
-            case UP:
-                this.missleImage = Tools.getImage("missileU.gif");
-                break;
-            case DOWN:
-                this.missleImage = Tools.getImage("missileD.gif");
-                break;
-            case LEFT:
-                this.missleImage = Tools.getImage("missileL.gif");
-                break;
-            case RIGHT:
-                this.missleImage = Tools.getImage("missileR.gif");
-                break;
-            case UPLEFT:
-                this.missleImage = Tools.getImage("missileLU.gif");
-                break;
-            case UPRIGHT:
-                this.missleImage = Tools.getImage("missileRU.gif");
-                break;
-            case DOWNLEFT:
-                this.missleImage = Tools.getImage("missileLD.gif");
-                break;
-            case DOWNRIGHT:
-                this.missleImage = Tools.getImage("missileRD.gif");
-                break;
-        }
+        this.missleImage = this.direction.getImage("missile");
 
         return this.missleImage;
     }
@@ -82,19 +57,19 @@ public class Missle {
             case RIGHT:
                 this.x += SPEED;
                 break;
-            case UPLEFT:
+            case LEFT_UP:
                 this.x -= SPEED;
                 this.y -= SPEED;
                 break;
-            case UPRIGHT:
+            case RIGHT_UP:
                 this.x += SPEED;
                 this.y -= SPEED;
                 break;
-            case DOWNLEFT:
+            case LEFT_DOWN:
                 this.x -= SPEED;
                 this.y += SPEED;
                 break;
-            case DOWNRIGHT:
+            case RIGHT_DOWN:
                 this.x += SPEED;
                 this.y += SPEED;
                 break;

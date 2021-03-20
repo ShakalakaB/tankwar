@@ -20,6 +20,7 @@ public class App extends JComponent {
     private static App instance;
 
     private App() {
+        com.sun.javafx.application.PlatformImpl.startup(()->{});
         this.playerTank = new Tank(400, 100, Direction.DOWN, false);
 
         for (int i = 0; i < 3; i++) {
@@ -87,7 +88,7 @@ public class App extends JComponent {
 
 
     public static void main(String[] args) {
-        com.sun.javafx.application.PlatformImpl.startup(()->{});
+//        com.sun.javafx.application.PlatformImpl.startup(()->{});
 
         JFrame frame = new JFrame("tank war");
         frame.setTitle("tank war");

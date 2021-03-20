@@ -6,6 +6,7 @@ import javafx.scene.media.MediaPlayer;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.Random;
 
 public class Tank {
     private int x;
@@ -95,6 +96,9 @@ public class Tank {
             case KeyEvent.VK_CONTROL:
                 this.fire();
                 break;
+            case KeyEvent.VK_A:
+                this.superfire();
+                break;
         }
     }
 
@@ -118,32 +122,7 @@ public class Tank {
     protected Image getImage() {
         String prefix = this.isEnemy ? "e" : "";
 
-        switch (this.direction) {
-            case UP:
-                this.tankImage = Tools.getImage(prefix + "tankU.gif");
-                break;
-            case DOWN:
-                this.tankImage = Tools.getImage(prefix + "tankD.gif");
-                break;
-            case LEFT:
-                this.tankImage = Tools.getImage(prefix + "tankL.gif");
-                break;
-            case RIGHT:
-                this.tankImage = Tools.getImage(prefix + "tankR.gif");
-                break;
-            case UPLEFT:
-                this.tankImage = Tools.getImage(prefix + "tankLU.gif");
-                break;
-            case UPRIGHT:
-                this.tankImage = Tools.getImage(prefix + "tankRU.gif");
-                break;
-            case DOWNLEFT:
-                this.tankImage = Tools.getImage(prefix + "tankLD.gif");
-                break;
-            case DOWNRIGHT:
-                this.tankImage = Tools.getImage(prefix + "tankRD.gif");
-                break;
-        }
+        this.tankImage = this.direction.getImage(prefix + "tank");
 
         return this.tankImage;
     }
@@ -169,13 +148,13 @@ public class Tank {
             this.direction = this.movingDirection = (vertical == Direction.UP) ? Direction.UP : Direction.DOWN;
         } else if (horizontal != null && vertical != null) {
             if (horizontal == Direction.LEFT && vertical == Direction.UP) {
-                this.direction = this.movingDirection = Direction.UPLEFT;
+                this.direction = this.movingDirection = Direction.LEFT_UP;
             } else if (horizontal == Direction.LEFT && vertical == Direction.DOWN) {
-                this.direction = this.movingDirection = Direction.DOWNLEFT;
+                this.direction = this.movingDirection = Direction.LEFT_DOWN;
             } else if (horizontal == Direction.RIGHT && vertical == Direction.UP) {
-                this.direction = this.movingDirection = Direction.UPRIGHT;
+                this.direction = this.movingDirection = Direction.RIGHT_UP;
             } else if (horizontal == Direction.RIGHT && vertical == Direction.DOWN) {
-                this.direction = this.movingDirection = Direction.DOWNRIGHT;
+                this.direction = this.movingDirection = Direction.RIGHT_DOWN;
             }
         } else if (horizontal == null && vertical == null) {
             this.movingDirection = null;
@@ -200,19 +179,19 @@ public class Tank {
             case RIGHT:
                 this.x += 5;
                 break;
-            case UPLEFT:
+            case LEFT_UP:
                 this.x -= 5;
                 this.y -= 5;
                 break;
-            case UPRIGHT:
+            case RIGHT_UP:
                 this.x += 5;
                 this.y -= 5;
                 break;
-            case DOWNLEFT:
+            case LEFT_DOWN:
                 this.x -= 5;
                 this.y += 5;
                 break;
-            case DOWNRIGHT:
+            case RIGHT_DOWN:
                 this.x += 5;
                 this.y += 5;
                 break;
@@ -226,7 +205,24 @@ public class Tank {
                         this.direction, this.isEnemy)
         );
 
-        Media media = new Media(new File("assets/audios/shoot.wav").toURI().toString());
+        this.fireSound("shoot.wav");
+    }
+
+    protected void superfire() {
+        for (Direction direction : Direction.values()) {
+            App.getInstance().getMissles().add(
+                    new Missle(this.x + this.tankImage.getWidth(null) / 2 - 6,
+                            this.y + this.tankImage.getHeight(null) / 2 - 6,
+                            direction, this.isEnemy)
+            );
+        }
+
+        String filename = new Random().nextBoolean() ? "supershoot.aiff" : "supershoot.wav";
+        this.fireSound(filename);
+    }
+
+    protected void fireSound(String filename) {
+        Media media = new Media(new File("assets/audios/" + filename).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
     }
