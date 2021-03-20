@@ -87,6 +87,8 @@ public class App extends JComponent {
 
 
     public static void main(String[] args) {
+        com.sun.javafx.application.PlatformImpl.startup(()->{});
+
         JFrame frame = new JFrame("tank war");
         frame.setTitle("tank war");
         frame.setIconImage(new ImageIcon("assets/images/icon.png").getImage());

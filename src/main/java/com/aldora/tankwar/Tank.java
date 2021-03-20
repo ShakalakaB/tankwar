@@ -1,7 +1,11 @@
 package com.aldora.tankwar;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class Tank {
     private int x;
@@ -221,5 +225,9 @@ public class Tank {
                         this.y + this.tankImage.getHeight(null) / 2 - 6,
                         this.direction, this.isEnemy)
         );
+
+        Media media = new Media(new File("assets/audios/shoot.wav").toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
     }
 }
