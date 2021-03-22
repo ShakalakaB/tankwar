@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.Random;
 
 public class Tank {
+    public static final int TANK_SPEED = 5;
     private int x;
 
     private int y;
@@ -25,7 +26,7 @@ public class Tank {
 
     private boolean right = false;
 
-    private boolean isEnemy = false;
+    private final boolean isEnemy;
 
     private Image tankImage;
 
@@ -166,36 +167,8 @@ public class Tank {
             return;
         }
 
-        switch (this.movingDirection) {
-            case UP:
-                this.y -= 5;
-                break;
-            case DOWN:
-                this.y += 5;
-                break;
-            case LEFT:
-                this.x -= 5;
-                break;
-            case RIGHT:
-                this.x += 5;
-                break;
-            case LEFT_UP:
-                this.x -= 5;
-                this.y -= 5;
-                break;
-            case RIGHT_UP:
-                this.x += 5;
-                this.y -= 5;
-                break;
-            case LEFT_DOWN:
-                this.x -= 5;
-                this.y += 5;
-                break;
-            case RIGHT_DOWN:
-                this.x += 5;
-                this.y += 5;
-                break;
-        }
+        this.x += this.direction.xFactor * Tank.TANK_SPEED;
+        this.y += this.direction.yFactor * Tank.TANK_SPEED;
     }
 
     protected void fire() {

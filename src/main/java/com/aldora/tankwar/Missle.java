@@ -3,7 +3,7 @@ package com.aldora.tankwar;
 import java.awt.*;
 
 public class Missle {
-    public static final int SPEED = 10;
+    public static final int MISSLE_SPEED = 10;
 
     private int x;
 
@@ -44,35 +44,7 @@ public class Missle {
     }
 
     protected void determineMovingPosition() {
-        switch (this.direction) {
-            case UP:
-                this.y -= SPEED;
-                break;
-            case DOWN:
-                this.y += SPEED;
-                break;
-            case LEFT:
-                this.x -= SPEED;
-                break;
-            case RIGHT:
-                this.x += SPEED;
-                break;
-            case LEFT_UP:
-                this.x -= SPEED;
-                this.y -= SPEED;
-                break;
-            case RIGHT_UP:
-                this.x += SPEED;
-                this.y -= SPEED;
-                break;
-            case LEFT_DOWN:
-                this.x -= SPEED;
-                this.y += SPEED;
-                break;
-            case RIGHT_DOWN:
-                this.x += SPEED;
-                this.y += SPEED;
-                break;
-        }
+        this.x += this.direction.xFactor * MISSLE_SPEED;
+        this.y += this.direction.yFactor * MISSLE_SPEED;
     }
 }
