@@ -26,9 +26,21 @@ public class Tank {
 
     private boolean right = false;
 
+    private int hp = 100;
+
+    private boolean isAlive = true;
+
     private final boolean isEnemy;
 
     private Image tankImage;
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    void setAlive(boolean alive) {
+        isAlive = alive;
+    }
 
     public Tank(int x, int y, Direction direction, boolean isEnemy) {
         this.x = x;
@@ -57,7 +69,7 @@ public class Tank {
             this.y = 600 - this.tankImage.getHeight(null);
         }
 
-        for (Wall wall : App.getInstance().getWall()) {
+        for (Wall wall : App.getInstance().getWalls()) {
             if (this.getRectangle().intersects(wall.getRectangle())) {
                 this.x = oldX;
                 this.y = oldY;
@@ -72,6 +84,27 @@ public class Tank {
                 break;
             }
         }
+
+//        for (Missle missle : App.getInstance().getMissles()) {
+//            if (!missle.getRectangle().intersects(this.getRectangle())) {
+//                continue;
+//            }
+//
+//            if (missle.isEnemy() == this.isEnemy) {
+//                missle.setAlive(false);
+//                continue;
+//            }
+//
+//            if (this.isEnemy) {
+//                missle.setAlive(false);
+//                this.isAlive = false;
+//                continue;
+//            }
+//
+//            if (!this.isEnemy) {
+//                this.hp -= 20;
+//            }
+//        }
 
         graphics.drawImage(this.tankImage, this.x, this.y, null);
     }
@@ -118,6 +151,14 @@ public class Tank {
                 this.right = false;
                 break;
         }
+    }
+
+    int getHp() {
+        return hp;
+    }
+
+    void setHp(int hp) {
+        this.hp = hp;
     }
 
     protected Image getImage() {

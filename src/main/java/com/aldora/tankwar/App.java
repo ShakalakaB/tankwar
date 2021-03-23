@@ -53,7 +53,7 @@ public class App extends JComponent {
         return App.instance;
     }
 
-    public List<Wall> getWall() {
+    public List<Wall> getWalls() {
         return this.walls;
     }
 
@@ -65,12 +65,17 @@ public class App extends JComponent {
         return this.missles;
     }
 
+    public Tank getPlayerTank() {
+        return playerTank;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, 800, 600);
         this.playerTank.paint(g);
 
+        this.enemyTanks.removeIf(n -> !n.isAlive());
         for (Tank enemyTank : this.enemyTanks) {
             enemyTank.paint(g);
         }
@@ -79,6 +84,7 @@ public class App extends JComponent {
             wall.paint(g);
         }
 
+        this.missles.removeIf(n -> !n.isAlive());
         for (Missle missle : this.missles) {
             missle.paint(g);
         }
