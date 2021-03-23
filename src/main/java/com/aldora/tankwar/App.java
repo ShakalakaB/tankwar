@@ -23,15 +23,7 @@ public class App extends JComponent {
         com.sun.javafx.application.PlatformImpl.startup(()->{});
         this.playerTank = new Tank(400, 100, Direction.DOWN, false);
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                this.enemyTanks.add(new Tank(
-                        280 + j * 120,
-                        400 + i * 40,
-                        Direction.UP,
-                        true));
-            }
-        }
+        this.initEnemyTanks();
 
         this.walls = Arrays.asList(
                 new Wall(200, 140, 15, true),
@@ -43,6 +35,14 @@ public class App extends JComponent {
         this.missles = new ArrayList<>();
 
         this.setPreferredSize(new Dimension(800, 600));
+    }
+
+    private void initEnemyTanks() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                this.enemyTanks.add(new Tank(280 + j * 120, 400 + i * 40, Direction.UP, true));
+            }
+        }
     }
 
     public static App getInstance() {
@@ -76,6 +76,11 @@ public class App extends JComponent {
         this.playerTank.paint(g);
 
         this.enemyTanks.removeIf(n -> !n.isAlive());
+
+        if (this.enemyTanks.isEmpty()) {
+            this.initEnemyTanks();
+        }
+
         for (Tank enemyTank : this.enemyTanks) {
             enemyTank.paint(g);
         }
