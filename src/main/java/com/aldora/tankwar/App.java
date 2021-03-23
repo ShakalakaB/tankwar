@@ -17,6 +17,8 @@ public class App extends JComponent {
 
     private List<Missle> missles;
 
+    private List<Explosion> explosions;
+
     private static App instance;
 
     private App() {
@@ -34,6 +36,8 @@ public class App extends JComponent {
 
         this.missles = new ArrayList<>();
 
+        this.explosions = new ArrayList<>();
+
         this.setPreferredSize(new Dimension(800, 600));
     }
 
@@ -45,7 +49,7 @@ public class App extends JComponent {
         }
     }
 
-    public static App getInstance() {
+    static App getInstance() {
         if (App.instance == null) {
             App.instance = new App();
         }
@@ -53,20 +57,24 @@ public class App extends JComponent {
         return App.instance;
     }
 
-    public List<Wall> getWalls() {
+    List<Wall> getWalls() {
         return this.walls;
     }
 
-    public ArrayList<Tank> getEnemyTanks() {
+    ArrayList<Tank> getEnemyTanks() {
         return this.enemyTanks;
     }
 
-    public List<Missle> getMissles() {
+    List<Missle> getMissles() {
         return this.missles;
     }
 
-    public Tank getPlayerTank() {
+    Tank getPlayerTank() {
         return playerTank;
+    }
+
+    List<Explosion> getExplosions() {
+        return this.explosions;
     }
 
     @Override
@@ -92,6 +100,11 @@ public class App extends JComponent {
         this.missles.removeIf(n -> !n.isAlive());
         for (Missle missle : this.missles) {
             missle.paint(g);
+        }
+
+        this.explosions.removeIf(n -> !n.isAlive());
+        for (Explosion explosion : this.explosions) {
+            explosion.paint(g);
         }
 
         super.paintComponent(g);

@@ -63,6 +63,7 @@ public class Missle {
             if (playerTank.getRectangle().intersects(missleRectangle)) {
                 playerTank.setHp(App.getInstance().getPlayerTank().getHp() - 20);
 
+                this.addExplosions();
                 if (playerTank.getHp() <= 0) {
                     playerTank.setAlive(false);
                 }
@@ -73,7 +74,7 @@ public class Missle {
             for (Tank enemyTank : App.getInstance().getEnemyTanks()) {
                 if (enemyTank.getRectangle().intersects(missleRectangle)) {
                     enemyTank.setAlive(false);
-
+                    this.addExplosions();
                     this.isAlive = false;
                 }
             }
@@ -95,5 +96,13 @@ public class Missle {
 
     Rectangle getRectangle() {
         return new Rectangle(this.x, this.y, this.missleImage.getWidth(null), this.missleImage.getWidth(null));
+    }
+
+    private void addExplosions() {
+        App.getInstance().getExplosions().add(
+                new Explosion(this.x, this.y)
+        );
+
+        Tools.playSound("explode.wav");
     }
 }

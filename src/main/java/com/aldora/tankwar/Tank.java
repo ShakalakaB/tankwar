@@ -1,11 +1,7 @@
 package com.aldora.tankwar;
 
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.Random;
 
 public class Tank {
@@ -219,7 +215,7 @@ public class Tank {
                         this.direction, this.isEnemy)
         );
 
-        this.fireSound("shoot.wav");
+        Tools.playSound("shoot.wav");
     }
 
     protected void superfire() {
@@ -232,12 +228,6 @@ public class Tank {
         }
 
         String filename = new Random().nextBoolean() ? "supershoot.aiff" : "supershoot.wav";
-        this.fireSound(filename);
-    }
-
-    protected void fireSound(String filename) {
-        Media media = new Media(new File("assets/audios/" + filename).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+        Tools.playSound(filename);
     }
 }
