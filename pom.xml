@@ -37,6 +37,11 @@
       <version>RELEASE</version>
       <scope>test</scope>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.openjfx</groupId>-->
+<!--      <artifactId>javafx-media</artifactId>-->
+<!--      <version>17-ea+5</version>-->
+<!--    </dependency>-->
   </dependencies>
 
   <build>

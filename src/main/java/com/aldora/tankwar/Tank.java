@@ -81,27 +81,6 @@ public class Tank {
             }
         }
 
-//        for (Missle missle : App.getInstance().getMissles()) {
-//            if (!missle.getRectangle().intersects(this.getRectangle())) {
-//                continue;
-//            }
-//
-//            if (missle.isEnemy() == this.isEnemy) {
-//                missle.setAlive(false);
-//                continue;
-//            }
-//
-//            if (this.isEnemy) {
-//                missle.setAlive(false);
-//                this.isAlive = false;
-//                continue;
-//            }
-//
-//            if (!this.isEnemy) {
-//                this.hp -= 20;
-//            }
-//        }
-
         graphics.drawImage(this.tankImage, this.x, this.y, null);
     }
 
@@ -229,5 +208,23 @@ public class Tank {
 
         String filename = new Random().nextBoolean() ? "supershoot.aiff" : "supershoot.wav";
         Tools.playSound(filename);
+    }
+
+    private int step = new Random().nextInt(12) + 3;
+
+    void actRandomly() {
+        Direction[] directions = Direction.values();
+
+        if (step == 0) {
+            step = new Random().nextInt(12) + 3;
+
+            this.direction = directions[new Random().nextInt(directions.length)];
+
+            if (new Random().nextBoolean()) {
+                this.fire();
+            }
+        }
+
+        step--;
     }
 }

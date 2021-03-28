@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class App extends JComponent {
     private final Tank playerTank;
@@ -34,7 +35,8 @@ public class App extends JComponent {
                 new Wall(700, 80, 15, false)
         );
 
-        this.missles = new ArrayList<>();
+//        this.missles = new ArrayList<>();
+        this.missles = new CopyOnWriteArrayList<>();
 
         this.explosions = new ArrayList<>();
 
@@ -141,6 +143,9 @@ public class App extends JComponent {
         while (true) {
             app.repaint();
 
+            for (Tank enemyTank : getInstance().getEnemyTanks()) {
+                enemyTank.actRandomly();
+            }
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
