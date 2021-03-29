@@ -74,11 +74,17 @@ public class Tank {
         }
 
         for (Tank enemyTank : App.getInstance().getEnemyTanks()) {
-            if (this.getRectangle().intersects(enemyTank.getRectangle())) {
+            if (this != enemyTank && this.getRectangle().intersects(enemyTank.getRectangle())) {
                 this.x = oldX;
                 this.y = oldY;
                 break;
             }
+        }
+
+        if (this.isEnemy &&
+                this.getRectangle().intersects(App.getInstance().getPlayerTank().getRectangle())) {
+            this.x = oldX;
+            this.y = oldY;
         }
 
         graphics.drawImage(this.tankImage, this.x, this.y, null);
@@ -145,6 +151,10 @@ public class Tank {
     }
 
     protected void determineMovingDirection() {
+        if (this.isEnemy) {
+            return;
+        }
+
         Direction horizontal, vertical;
 
         if ((this.left || this.right) && !(this.left && this.right)) {
@@ -210,17 +220,18 @@ public class Tank {
         Tools.playSound(filename);
     }
 
-    private int step = new Random().nextInt(12) + 3;
+    private final Random random = new Random();
+    private int step = random.nextInt(12) + 3;
 
     void actRandomly() {
         Direction[] directions = Direction.values();
 
         if (step == 0) {
-            step = new Random().nextInt(12) + 3;
+            step = random.nextInt(12) + 3;
 
-            this.direction = directions[new Random().nextInt(directions.length)];
+            this.direction = this.movingDirection = directions[random.nextInt(directions.length)];
 
-            if (new Random().nextBoolean()) {
+            if (random.nextBoolean()) {
                 this.fire();
             }
         }
