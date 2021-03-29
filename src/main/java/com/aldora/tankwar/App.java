@@ -83,6 +83,14 @@ public class App extends JComponent {
     protected void paintComponent(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, 800, 600);
+
+        if (!this.playerTank.isAlive()) {
+            g.setColor(Color.red);
+            g.setFont(new Font(null, Font.BOLD, 100));
+            g.drawString("GAME OVER", 80, 300);
+            return;
+        }
+
         this.playerTank.paint(g);
 
         this.enemyTanks.removeIf(n -> !n.isAlive());
@@ -142,6 +150,10 @@ public class App extends JComponent {
 
         while (true) {
             app.repaint();
+
+            if (!App.getInstance().playerTank.isAlive()) {
+                continue;
+            }
 
             for (Tank enemyTank : getInstance().getEnemyTanks()) {
                 enemyTank.actRandomly();
