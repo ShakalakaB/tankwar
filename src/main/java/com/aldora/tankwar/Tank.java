@@ -53,6 +53,15 @@ public class Tank {
         this.determineMovingPosition();
         this.tankImage = this.getImage();
 
+        if (!this.isEnemy) {
+            graphics.setColor(Color.RED);
+            graphics.fillRect(x, y - 10, this.getImage().getWidth(null), 10);
+
+            graphics.setColor(Color.white);
+            graphics.fillRect(x, y - 10,
+                    ((100 - this.hp) * this.getImage().getWidth(null)) / 100, 10);
+        }
+
         if (this.x < 0) {
             this.x = 0;
         } else if (this.x + this.tankImage.getWidth(null) > 800) {
@@ -204,7 +213,7 @@ public class Tank {
                         this.direction, this.isEnemy)
         );
 
-        Tools.playSound("shoot.wav");
+//        Tools.playSound("shoot.wav");
     }
 
     protected void superfire() {
