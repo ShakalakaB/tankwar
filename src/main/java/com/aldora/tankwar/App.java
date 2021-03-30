@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class App extends JComponent {
     private Tank playerTank;
 
-    private ArrayList<Tank> enemyTanks = new ArrayList<>();
+    private List<Tank> enemyTanks;
 
     private final List<Wall> walls;
 
@@ -22,8 +23,11 @@ public class App extends JComponent {
 
     private static App instance;
 
+    private AtomicInteger killedTanks = new AtomicInteger(0);
+
     private App() {
-        com.sun.javafx.application.PlatformImpl.startup(()->{});
+        com.sun.javafx.application.PlatformImpl.startup(() -> {
+        });
         this.playerTank = new Tank(400, 100, Direction.DOWN, false);
 
         this.initEnemyTanks();
@@ -44,6 +48,7 @@ public class App extends JComponent {
     }
 
     private void initEnemyTanks() {
+        this.enemyTanks = new CopyOnWriteArrayList<>();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 this.enemyTanks.add(new Tank(280 + j * 120, 400 + i * 40, Direction.UP, true));
@@ -63,7 +68,7 @@ public class App extends JComponent {
         return this.walls;
     }
 
-    ArrayList<Tank> getEnemyTanks() {
+    List<Tank> getEnemyTanks() {
         return this.enemyTanks;
     }
 
@@ -93,9 +98,15 @@ public class App extends JComponent {
             return;
         }
 
+        g.setColor(Color.white);
+        g.setFont(new Font(null, Font.BOLD, 16));
+        g.drawString("killed tanks: " + this.killedTanks, 10, 20);
+
         this.playerTank.paint(g);
 
+        int count = this.enemyTanks.size();
         this.enemyTanks.removeIf(n -> !n.isAlive());
+        this.killedTanks.addAndGet(count - this.enemyTanks.size());
 
         if (this.enemyTanks.isEmpty()) {
             this.initEnemyTanks();
@@ -122,9 +133,8 @@ public class App extends JComponent {
         super.paintComponent(g);
     }
 
-    protected void restart()
-    {
-        this.enemyTanks = new ArrayList<>();
+    protected void restart() {
+        this.killedTanks = new AtomicInteger(0);
         this.initEnemyTanks();
         this.playerTank = new Tank(400, 100, Direction.DOWN, false);
     }
