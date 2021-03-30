@@ -123,6 +123,9 @@ public class Tank {
             case KeyEvent.VK_A:
                 this.superfire();
                 break;
+            case KeyEvent.VK_F2:
+                App.getInstance().restart();
+                break;
         }
     }
 

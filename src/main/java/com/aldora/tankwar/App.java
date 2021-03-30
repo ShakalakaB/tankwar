@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class App extends JComponent {
-    private final Tank playerTank;
+    private Tank playerTank;
 
-    private final ArrayList<Tank> enemyTanks = new ArrayList<>();
+    private ArrayList<Tank> enemyTanks = new ArrayList<>();
 
     private final List<Wall> walls;
 
@@ -88,6 +88,8 @@ public class App extends JComponent {
             g.setColor(Color.red);
             g.setFont(new Font(null, Font.BOLD, 100));
             g.drawString("GAME OVER", 80, 300);
+            g.setFont(new Font(null, Font.BOLD, 50));
+            g.drawString("Press F2 to Restart", 150, 500);
             return;
         }
 
@@ -118,6 +120,13 @@ public class App extends JComponent {
         }
 
         super.paintComponent(g);
+    }
+
+    protected void restart()
+    {
+        this.enemyTanks = new ArrayList<>();
+        this.initEnemyTanks();
+        this.playerTank = new Tank(400, 100, Direction.DOWN, false);
     }
 
 
