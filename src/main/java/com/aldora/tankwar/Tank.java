@@ -219,7 +219,7 @@ public class Tank {
                         this.direction, this.isEnemy)
         );
 
-//        Tools.playSound("shoot.wav");
+        Tools.playSound("shoot.wav");
     }
 
     protected void superfire() {
