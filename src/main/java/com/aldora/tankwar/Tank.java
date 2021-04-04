@@ -6,6 +6,9 @@ import java.util.Random;
 
 public class Tank {
     public static final int TANK_SPEED = 5;
+
+    public static final int MAX_HP = 100;
+
     private int x;
 
     private int y;
@@ -22,7 +25,7 @@ public class Tank {
 
     private boolean right = false;
 
-    private int hp = 100;
+    private int hp = MAX_HP;
 
     private boolean isAlive = true;
 
@@ -59,7 +62,7 @@ public class Tank {
 
             graphics.setColor(Color.white);
             graphics.fillRect(x, y - 10,
-                    ((100 - this.hp) * this.getImage().getWidth(null)) / 100, 10);
+                    ((MAX_HP - this.hp) * this.getImage().getWidth(null)) / MAX_HP, 10);
         }
 
         if (this.x < 0) {
@@ -210,18 +213,18 @@ public class Tank {
     }
 
     protected void fire() {
-        App.getInstance().getMissles().add(
+        App.getInstance().getMissiles().add(
                 new Missle(this.x + this.tankImage.getWidth(null) / 2 - 6,
                         this.y + this.tankImage.getHeight(null) / 2 - 6,
                         this.direction, this.isEnemy)
         );
 
-        Tools.playSound("shoot.wav");
+//        Tools.playSound("shoot.wav");
     }
 
     protected void superfire() {
         for (Direction direction : Direction.values()) {
-            App.getInstance().getMissles().add(
+            App.getInstance().getMissiles().add(
                     new Missle(this.x + this.tankImage.getWidth(null) / 2 - 6,
                             this.y + this.tankImage.getHeight(null) / 2 - 6,
                             direction, this.isEnemy)

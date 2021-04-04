@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,32 +18,42 @@ public class App extends JComponent {
 
     private final List<Wall> walls;
 
-    private List<Missle> missles;
+    private List<Missle> missiles;
 
     private List<Explosion> explosions;
 
+    private Blood blood;
+
     private static App instance;
 
+    private Image cactusImage;
+
     private AtomicInteger killedTanks = new AtomicInteger(0);
+
+    private Random random = new Random();
 
     private App() {
         com.sun.javafx.application.PlatformImpl.startup(() -> {
         });
         this.playerTank = new Tank(400, 100, Direction.DOWN, false);
 
+        this.cactusImage = Tools.getImage("tree.png");
+
         this.initEnemyTanks();
 
         this.walls = Arrays.asList(
-                new Wall(200, 140, 15, true),
-                new Wall(200, 540, 15, true),
-                new Wall(100, 80, 15, false),
-                new Wall(700, 80, 15, false)
+                new Wall(190, 140, 12, true),
+                new Wall(190, 540, 12, true),
+                new Wall(70, 120, 12, false),
+                new Wall(670, 120, 12, false)
         );
 
 //        this.missles = new ArrayList<>();
-        this.missles = new CopyOnWriteArrayList<>();
+        this.missiles = new CopyOnWriteArrayList<>();
 
         this.explosions = new ArrayList<>();
+
+        this.blood = new Blood(350, 250);
 
         this.setPreferredSize(new Dimension(800, 600));
     }
@@ -72,8 +83,8 @@ public class App extends JComponent {
         return this.enemyTanks;
     }
 
-    List<Missle> getMissles() {
-        return this.missles;
+    List<Missle> getMissiles() {
+        return this.missiles;
     }
 
     Tank getPlayerTank() {
@@ -101,8 +112,19 @@ public class App extends JComponent {
         g.setColor(Color.white);
         g.setFont(new Font(null, Font.BOLD, 16));
         g.drawString("killed tanks: " + this.killedTanks, 10, 20);
+        g.drawImage(this.cactusImage, 10, 520, null);
+        g.drawImage(this.cactusImage, 720, 10, null);
 
         this.playerTank.paint(g);
+
+        if (this.playerTank.getHp() <= Tank.MAX_HP * 0.2 &&
+        this.random.nextInt(3) == 1) {
+            this.blood.setIsAlive(true);
+        }
+
+        if (this.blood.isAlive()) {
+            this.blood.paint(g);
+        }
 
         int count = this.enemyTanks.size();
         this.enemyTanks.removeIf(n -> !n.isAlive());
@@ -120,8 +142,8 @@ public class App extends JComponent {
             wall.paint(g);
         }
 
-        this.missles.removeIf(n -> !n.isAlive());
-        for (Missle missle : this.missles) {
+        this.missiles.removeIf(n -> !n.isAlive());
+        for (Missle missle : this.missiles) {
             missle.paint(g);
         }
 
@@ -137,6 +159,7 @@ public class App extends JComponent {
         this.killedTanks = new AtomicInteger(0);
         this.initEnemyTanks();
         this.playerTank = new Tank(400, 100, Direction.DOWN, false);
+        this.blood = new Blood(350, 250);
     }
 
 
