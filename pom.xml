@@ -37,7 +37,29 @@
       <version>RELEASE</version>
       <scope>test</scope>
     </dependency>
-<!--    <dependency>-->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.75</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20180813</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.16</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--    <dependency>-->
 <!--      <groupId>org.openjfx</groupId>-->
 <!--      <artifactId>javafx-media</artifactId>-->
 <!--      <version>17-ea+5</version>-->
@@ -95,6 +117,10 @@
         <configuration>
           <source>15</source>
           <target>15</target>
+          <compilerArgs>
+            <arg>--add-exports</arg>
+            <arg>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
     </plugins>

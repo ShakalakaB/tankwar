@@ -1,15 +1,25 @@
 package com.aldora.tankwar;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.io.FileUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class App extends JComponent {
     private Tank playerTank;
@@ -118,7 +128,7 @@ public class App extends JComponent {
         this.playerTank.paint(g);
 
         if (this.playerTank.getHp() <= Tank.MAX_HP * 0.2 &&
-        this.random.nextInt(3) == 1) {
+                this.random.nextInt(3) == 1) {
             this.blood.setIsAlive(true);
         }
 
@@ -162,6 +172,30 @@ public class App extends JComponent {
         this.blood = new Blood(350, 250);
     }
 
+    void stash() throws IOException {
+        String filePath = "snapshot";
+        this.stash(filePath);
+//        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath)));
+//        writer.println(JSON.toJSONString(App.getInstance().playerTank, true));
+//        writer.close();
+    }
+
+    void stash(String filePath) throws IOException {
+        Snapshot snapshot = new Snapshot(
+                App.getInstance().playerTank.isAlive(),
+                App.getInstance().playerTank.getPosition(),
+                App.getInstance().enemyTanks.stream().
+                        filter(Tank::isAlive).
+                        map(Tank::getPosition).
+                        collect(Collectors.toList())
+        );
+
+        FileUtils.write(
+                new File(filePath),
+                JSON.toJSONString(snapshot, true),
+                StandardCharsets.UTF_8
+        );
+    }
 
     public static void main(String[] args) {
 //        com.sun.javafx.application.PlatformImpl.startup(()->{});
@@ -169,10 +203,26 @@ public class App extends JComponent {
         JFrame frame = new JFrame("tank war");
         frame.setTitle("tank war");
         frame.setIconImage(new ImageIcon("assets/images/icon.png").getImage());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         final App app = App.getInstance();
         frame.add(app);
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                try {
+                    app.stash();
+                } catch (IOException ioException) {
+                    JOptionPane.showMessageDialog(null,
+                            "Failed to save current status",
+                            "Oops! Errors Occurred!", JOptionPane.ERROR_MESSAGE);
+                    System.exit(4);
+                }
+                System.exit(0);
+            }
+        });
+
         frame.pack();
 
         frame.addKeyListener(new KeyAdapter() {

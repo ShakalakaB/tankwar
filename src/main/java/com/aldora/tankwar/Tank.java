@@ -149,12 +149,29 @@ public class Tank {
         }
     }
 
+    void setHp(int hp) {
+        this.hp = hp;
+    }
+
     int getHp() {
         return hp;
     }
 
-    void setHp(int hp) {
-        this.hp = hp;
+    int getX() {
+        return x;
+    }
+
+    int getY() {
+        return y;
+    }
+
+    Snapshot.Position getPosition()
+    {
+        return new Snapshot.Position(this.x, this.y, this.direction);
+    }
+
+    Direction getMovingDirection() {
+        return movingDirection;
     }
 
     protected Image getImage() {
