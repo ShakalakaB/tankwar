@@ -1,7 +1,6 @@
 package com.aldora.tankwar;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
@@ -12,7 +11,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class App extends JComponent {
+    static final String SAVE_File_PATH = "snapshot";
+
     private Tank playerTank;
 
     private List<Tank> enemyTanks;
@@ -172,15 +172,14 @@ public class App extends JComponent {
         this.blood = new Blood(350, 250);
     }
 
-    void stash() throws IOException {
-        String filePath = "snapshot";
-        this.stash(filePath);
+    void save() throws IOException {
+        this.save(SAVE_File_PATH);
 //        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath)));
 //        writer.println(JSON.toJSONString(App.getInstance().playerTank, true));
 //        writer.close();
     }
 
-    void stash(String filePath) throws IOException {
+    void save(String filePath) throws IOException {
         Snapshot snapshot = new Snapshot(
                 App.getInstance().playerTank.isAlive(),
                 App.getInstance().playerTank.getPosition(),
@@ -195,6 +194,25 @@ public class App extends JComponent {
                 JSON.toJSONString(snapshot, true),
                 StandardCharsets.UTF_8
         );
+    }
+
+    void loadFromCache() throws IOException {
+        File file = new File(SAVE_File_PATH);
+
+        if (file.exists() && file.isFile()) {
+            String json = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+            Snapshot snapshot = JSON.parseObject(json, Snapshot.class);
+
+            if (snapshot.isGameOnGoing()) {
+                this.playerTank = new Tank(snapshot.getPlayerTankPosition(), false);
+
+                this.enemyTanks.clear();
+
+                for (Snapshot.Position enemyTankPosition : snapshot.getEnemyTanksPosition()) {
+                    this.enemyTanks.add(new Tank(enemyTankPosition, true));
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -212,7 +230,7 @@ public class App extends JComponent {
             @Override
             public void windowClosing(WindowEvent e) {
                 try {
-                    app.stash();
+                    app.save();
                 } catch (IOException ioException) {
                     JOptionPane.showMessageDialog(null,
                             "Failed to save current status",
@@ -239,6 +257,15 @@ public class App extends JComponent {
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        try {
+            app.loadFromCache();
+        } catch (IOException ioException) {
+            JOptionPane.showMessageDialog(null,
+                    "Failed to load previous status",
+                    "Oops! Errors Occurred!", JOptionPane.ERROR_MESSAGE);
+            System.exit(4);
+        }
 
         while (true) {
             app.repaint();

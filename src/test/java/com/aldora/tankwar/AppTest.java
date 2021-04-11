@@ -1,5 +1,6 @@
 package com.aldora.tankwar;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.alibaba.fastjson.JSON;
@@ -17,7 +18,7 @@ public class AppTest
     void stash() throws IOException {
         String filePath = "tmp/snapshot";
 
-        App.getInstance().stash(filePath);
+        App.getInstance().save(filePath);
 
         byte[] bytes = Files.readAllBytes(Paths.get(filePath));
         String fileContent = new String(bytes);

@@ -33,6 +33,10 @@ public class Tank {
 
     private Image tankImage;
 
+    private final Random random = new Random();
+
+    private int step = random.nextInt(12) + 3;
+
     public boolean isAlive() {
         return isAlive;
     }
@@ -45,6 +49,14 @@ public class Tank {
         this.x = x;
         this.y = y;
         this.direction = direction;
+        this.isEnemy = isEnemy;
+        this.tankImage = this.getImage();
+    }
+
+    public Tank(Snapshot.Position position, boolean isEnemy) {
+        this.x = position.getX();
+        this.y = position.getY();
+        this.direction = position.getDirection();
         this.isEnemy = isEnemy;
         this.tankImage = this.getImage();
     }
@@ -174,6 +186,22 @@ public class Tank {
         return movingDirection;
     }
 
+    void actRandomly() {
+        Direction[] directions = Direction.values();
+
+        if (step == 0) {
+            step = random.nextInt(12) + 3;
+
+            this.direction = this.movingDirection = directions[random.nextInt(directions.length)];
+
+            if (random.nextBoolean()) {
+                this.fire();
+            }
+        }
+
+        step--;
+    }
+
     protected Image getImage() {
         String prefix = this.isEnemy ? "e" : "";
 
@@ -250,24 +278,5 @@ public class Tank {
 
         String filename = new Random().nextBoolean() ? "supershoot.aiff" : "supershoot.wav";
         Tools.playSound(filename);
-    }
-
-    private final Random random = new Random();
-    private int step = random.nextInt(12) + 3;
-
-    void actRandomly() {
-        Direction[] directions = Direction.values();
-
-        if (step == 0) {
-            step = random.nextInt(12) + 3;
-
-            this.direction = this.movingDirection = directions[random.nextInt(directions.length)];
-
-            if (random.nextBoolean()) {
-                this.fire();
-            }
-        }
-
-        step--;
     }
 }
