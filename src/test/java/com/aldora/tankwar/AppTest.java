@@ -22,6 +22,7 @@ public class AppTest
         byte[] bytes = Files.readAllBytes(Paths.get(filePath));
         String fileContent = new String(bytes);
         Snapshot snapshotObject = JSON.parseObject(fileContent, Snapshot.class);
-        assertTrue(snapshotObject.getIsGameOnGoing());
+//        assertTrue(snapshotObject.getIsGameOnGoing());
+        assertTrue(snapshotObject.isGameOnGoing());
     }
 }
