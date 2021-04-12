@@ -29,6 +29,8 @@ public class Tank {
 
     private boolean isAlive = true;
 
+    private int directionCode = 0;
+
     private final boolean isEnemy;
 
     private Image tankImage;
@@ -121,16 +123,16 @@ public class Tank {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                this.up = true;
+                this.directionCode |= Direction.UP.code;
                 break;
             case KeyEvent.VK_DOWN:
-                this.down = true;
+                this.directionCode |= Direction.DOWN.code;
                 break;
             case KeyEvent.VK_LEFT:
-                this.left = true;
+                this.directionCode |= Direction.LEFT.code;
                 break;
             case KeyEvent.VK_RIGHT:
-                this.right = true;
+                this.directionCode |= Direction.RIGHT.code;
                 break;
             case KeyEvent.VK_CONTROL:
                 this.fire();
@@ -147,16 +149,16 @@ public class Tank {
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
-                this.up = false;
+                this.directionCode ^= Direction.UP.code;
                 break;
             case KeyEvent.VK_DOWN:
-                this.down = false;
+                this.directionCode ^= Direction.DOWN.code;
                 break;
             case KeyEvent.VK_LEFT:
-                this.left = false;
+                this.directionCode ^= Direction.LEFT.code;
                 break;
             case KeyEvent.VK_RIGHT:
-                this.right = false;
+                this.directionCode ^= Direction.RIGHT.code;
                 break;
         }
     }
@@ -215,37 +217,43 @@ public class Tank {
             return;
         }
 
-        Direction horizontal, vertical;
+        this.movingDirection = Direction.getDirection(this.directionCode);
 
-        if ((this.left || this.right) && !(this.left && this.right)) {
-            horizontal = this.right ? Direction.RIGHT : Direction.LEFT;
-        } else {
-            horizontal = null;
+        if (null != this.movingDirection) {
+            this.direction = this.movingDirection;
         }
 
-        if ((this.up || this.down) && !(this.up && this.down)) {
-            vertical = this.up ? Direction.UP : Direction.DOWN;
-        } else {
-            vertical = null;
-        }
-
-        if (horizontal != null && vertical == null) {
-            this.direction = this.movingDirection = (horizontal == Direction.LEFT) ? Direction.LEFT : Direction.RIGHT;
-        } else if (horizontal == null && vertical != null) {
-            this.direction = this.movingDirection = (vertical == Direction.UP) ? Direction.UP : Direction.DOWN;
-        } else if (horizontal != null && vertical != null) {
-            if (horizontal == Direction.LEFT && vertical == Direction.UP) {
-                this.direction = this.movingDirection = Direction.LEFT_UP;
-            } else if (horizontal == Direction.LEFT && vertical == Direction.DOWN) {
-                this.direction = this.movingDirection = Direction.LEFT_DOWN;
-            } else if (horizontal == Direction.RIGHT && vertical == Direction.UP) {
-                this.direction = this.movingDirection = Direction.RIGHT_UP;
-            } else if (horizontal == Direction.RIGHT && vertical == Direction.DOWN) {
-                this.direction = this.movingDirection = Direction.RIGHT_DOWN;
-            }
-        } else if (horizontal == null && vertical == null) {
-            this.movingDirection = null;
-        }
+//        Direction horizontal, vertical;
+//
+//        if ((this.left || this.right) && !(this.left && this.right)) {
+//            horizontal = this.right ? Direction.RIGHT : Direction.LEFT;
+//        } else {
+//            horizontal = null;
+//        }
+//
+//        if ((this.up || this.down) && !(this.up && this.down)) {
+//            vertical = this.up ? Direction.UP : Direction.DOWN;
+//        } else {
+//            vertical = null;
+//        }
+//
+//        if (horizontal != null && vertical == null) {
+//            this.direction = this.movingDirection = (horizontal == Direction.LEFT) ? Direction.LEFT : Direction.RIGHT;
+//        } else if (horizontal == null && vertical != null) {
+//            this.direction = this.movingDirection = (vertical == Direction.UP) ? Direction.UP : Direction.DOWN;
+//        } else if (horizontal != null && vertical != null) {
+//            if (horizontal == Direction.LEFT && vertical == Direction.UP) {
+//                this.direction = this.movingDirection = Direction.LEFT_UP;
+//            } else if (horizontal == Direction.LEFT && vertical == Direction.DOWN) {
+//                this.direction = this.movingDirection = Direction.LEFT_DOWN;
+//            } else if (horizontal == Direction.RIGHT && vertical == Direction.UP) {
+//                this.direction = this.movingDirection = Direction.RIGHT_UP;
+//            } else if (horizontal == Direction.RIGHT && vertical == Direction.DOWN) {
+//                this.direction = this.movingDirection = Direction.RIGHT_DOWN;
+//            }
+//        } else if (horizontal == null && vertical == null) {
+//            this.movingDirection = null;
+//        }
     }
 
     protected void determineMovingPosition() {
