@@ -133,6 +133,13 @@
           <compilerArgs>
             <arg>--add-exports</arg><arg>javafx.graphics/com.sun.javafx.application=my.tankwar</arg>
           </compilerArgs>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>3.8.0</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
       </plugin>
     </plugins>
