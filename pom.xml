@@ -132,7 +132,6 @@
           <target>15</target>
           <compilerArgs>
             <arg>--add-exports</arg><arg>javafx.graphics/com.sun.javafx.application=my.tankwar</arg>
-<!--            <arg>&#45;&#45;add-exports</arg><arg>javafx.graphics/com.sun.javafx.application=ALL-UNNAMED</arg>-->
           </compilerArgs>
         </configuration>
       </plugin>
