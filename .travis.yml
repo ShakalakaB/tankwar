@@ -11,5 +11,4 @@ before_script:
   - "export DISPLAY=:99.0"
 
 after_success:
-  - ./mvnw clean install
   - bash <(curl -s https://codecov.io/bash)
