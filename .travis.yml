@@ -9,3 +9,6 @@ jdk: oraclejdk15
 
 before_script:
   - "export DISPLAY=:99.0"
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
