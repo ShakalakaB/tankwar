@@ -1,3 +1,11 @@
 language: java
-sudo: yes
+
+sudo: true
+
+services:
+  - xvfb
+
 jdk: oraclejdk15
+
+before_script:
+  - "export DISPLAY=:99.0"
