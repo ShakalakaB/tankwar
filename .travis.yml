@@ -7,11 +7,6 @@ services:
 
 jdk: oraclejdk15
 
-env:
-  global:
-    - CODECOV_TOKEN=49c96a33-fbc8-4004-8144-77a28970e398
-
-
 before_script:
   - "export DISPLAY=:99.0"
 
