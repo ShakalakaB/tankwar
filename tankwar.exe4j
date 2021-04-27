@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<exe4j version="8.0" transformSequenceNumber="3">
+  <directoryPresets config="/media/distribution/tankwar/assets/images" />
+  <application name="TankWar" distributionSourceDir="/media/distribution/tankwar" />
+  <executable name="TankWar" iconSet="true" iconFile="/media/distribution/tankwar/assets/images/tankwar.ico" stderrMode="append" executableMode="gui" amd64="false" />
+  <splashScreen show="true" bitmapFile="/media/distribution/tankwar/assets/images/tank-war.png" />
+  <java mainClass="com.aldora.tankwar.App" vmParameters="--add-exports javafx.graphics/com.sun.javafx.application=my.tankwar" minVersion="1.8" maxVersion="15">
+    <classPath>
+      <scanDirectory location="./lib" failOnError="false" />
+    </classPath>
+  </java>
+</exe4j>
